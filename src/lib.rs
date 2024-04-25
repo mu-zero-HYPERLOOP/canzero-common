@@ -1,5 +1,6 @@
 
 use std::{ops::Deref, time::Duration};
+use serde::{ser::SerializeMap, Serialize};
 
 pub struct Timestamped<T> {
     timestamp : Duration,
@@ -121,10 +122,6 @@ impl Serialize for CanFrame {
         map.end()
     }
 }
-
-use serde::{ser::SerializeMap, Serialize};
-
-use super::timestamped::Timestamped;
 
 pub type TCanError = Timestamped<CanError>;
 
