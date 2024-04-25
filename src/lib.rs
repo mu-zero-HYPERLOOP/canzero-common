@@ -1,7 +1,7 @@
 use serde::{
     Deserialize, Serialize,
 };
-use std::{ops::Deref, time::Duration};
+use std::{ops::Deref, time::{Duration, Instant}};
 
 #[derive(Serialize, Deserialize)]
 pub struct Timestamped<T> {
@@ -37,6 +37,13 @@ impl<T> Deref for Timestamped<T> {
 impl<T> Timestamped<T> {
     pub fn new(timestamp: Duration, value: T) -> Self {
         Self { timestamp, value }
+    }
+
+    pub fn now(base_time : Instant, value : T) -> Self {
+        Self {
+            timestamp : Instant::now().duration_since(base_time),
+            value,
+        }
     }
 
     pub fn timestamp(&self) -> &Duration {
