@@ -3,6 +3,7 @@ use serde::{
 };
 use std::{ops::Deref, time::Duration};
 
+#[derive(Serialize, Deserialize)]
 pub struct Timestamped<T> {
     timestamp: Duration,
     value: T,
