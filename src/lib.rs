@@ -5,8 +5,8 @@ use std::{ops::Deref, time::{Duration, Instant}};
 
 #[derive(Serialize, Deserialize)]
 pub struct Timestamped<T> {
-    timestamp: Duration,
-    value: T,
+    pub timestamp: Duration,
+    pub value: T,
 }
 
 // TODO serialize implementation for Timestamped<T : Serialize>
