@@ -46,16 +46,12 @@ impl<T> Timestamped<T> {
         }
     }
 
-    pub fn timestamp(&self) -> &Duration {
-        &self.timestamp
-    }
-
     pub fn destruct(self) -> (Duration, T) {
         (self.timestamp, self.value)
     }
 
     pub fn new_value<R>(&self, value: R) -> Timestamped<R> {
-        Timestamped::new(*self.timestamp(), value)
+        Timestamped::new(self.timestamp, value)
     }
 }
 
