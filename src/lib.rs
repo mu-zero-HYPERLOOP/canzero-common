@@ -124,24 +124,6 @@ impl CanFrame {
     }
 }
 
-// impl Serialize for CanFrame {
-//     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-//     where
-//         S: serde::Serializer,
-//     {
-//         let mut map = serializer.serialize_map(Some(5))?;
-//         let id = self.id & CanFrameIdFlags::ExtMask as u32;
-//         map.serialize_entry("id", &id)?;
-//         let ide = (self.id & CanFrameIdFlags::IdeMask as u32) != 0;
-//         map.serialize_entry("ide", &ide)?;
-//         let rtr = (self.id & CanFrameIdFlags::RtrMask as u32) != 0;
-//         map.serialize_entry("rtr", &rtr)?;
-//         map.serialize_entry("dlc", &self.dlc)?;
-//         map.serialize_entry("data", &self.data)?;
-//         map.end()
-//     }
-// }
-
 pub type TCanError = Timestamped<CanError>;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -153,37 +135,12 @@ impl CanError {
     }
 }
 
-// impl Serialize for CanError {
-//     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-//     where
-//         S: serde::Serializer,
-//     {
-//         let mut map = serializer.serialize_map(Some(3))?;
-//
-//         let bits = self.0;
-//         map.serialize_entry("data", &bits)?;
-//         if bits & 1 != 0 {
-//             map.serialize_entry("name", "CAN Bit Error")?;
-//             map.serialize_entry("description", "Wtf i didn't send that shit")?;
-//         } else if bits & 2 != 0 {
-//             map.serialize_entry("name", "CAN Bit Stuffing Error")?;
-//             map.serialize_entry("description", "Whhyy is everybody sending bullshit!")?;
-//         } else if bits & 4 != 0 {
-//             map.serialize_entry("name", "CAN Form Error")?;
-//             map.serialize_entry(
-//                 "description",
-//                 "Somebody in this network is to stupid to follow CAN standards!",
-//             )?;
-//         } else if bits & 8 != 0 {
-//             map.serialize_entry("name", "CAN ACK Error")?;
-//             map.serialize_entry("description", "Wait what CAN has ACK!")?;
-//         } else if bits & 16 != 0 {
-//             map.serialize_entry("name", "CAN CRC Error")?;
-//             map.serialize_entry("description", "Some CRC was computed incorrectly!")?;
-//         } else {
-//             map.serialize_entry("name", "Internal Error")?;
-//             map.serialize_entry("description", "The CNL fucked up some how!")?;
-//         }
-//         map.end()
-//     }
-// }
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct NetworkFrame {
+    pub bus_id : u32,
+    pub can_frame : CanFrame,
+}
+
+pub type TNetworkFrame = Timestamped<NetworkFrame>;
+
