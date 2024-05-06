@@ -4,22 +4,10 @@ use std::{
     time::{Duration, Instant},
 };
 
-#[derive(Serialize, Deserialize, Debug)]
-pub struct Timestamped<T : Sized> {
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct Timestamped<T : Clone> {
     pub timestamp: Duration,
     pub value: T,
-}
-
-impl<T> Clone for Timestamped<T>
-where
-    T: Clone,
-{
-    fn clone(&self) -> Self {
-        Timestamped {
-            timestamp: self.timestamp,
-            value: self.value.clone(),
-        }
-    }
 }
 
 // TODO serialize implementation for Timestamped<T : Serialize>
@@ -39,7 +27,7 @@ where
 // }
 //TODO deserialize implementation for Timestamped<T : Deserialize>
 
-impl<T> Deref for Timestamped<T> {
+impl<T : Clone> Deref for Timestamped<T> {
     type Target = T;
 
     fn deref(&self) -> &Self::Target {
@@ -47,7 +35,7 @@ impl<T> Deref for Timestamped<T> {
     }
 }
 
-impl<T> Timestamped<T> {
+impl<T : Clone> Timestamped<T> {
     pub fn new(timestamp: Duration, value: T) -> Self {
         Self { timestamp, value }
     }
@@ -63,7 +51,7 @@ impl<T> Timestamped<T> {
         (self.timestamp, self.value)
     }
 
-    pub fn new_value<R>(&self, value: R) -> Timestamped<R> {
+    pub fn new_value<R : Clone>(&self, value: R) -> Timestamped<R> {
         Timestamped::new(self.timestamp, value)
     }
 }
