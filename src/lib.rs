@@ -1,12 +1,25 @@
-use serde::{
-    Deserialize, Serialize,
+use serde::{Deserialize, Serialize};
+use std::{
+    ops::Deref,
+    time::{Duration, Instant},
 };
-use std::{ops::Deref, time::{Duration, Instant}};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Timestamped<T> {
     pub timestamp: Duration,
     pub value: T,
+}
+
+impl<T> Clone for Timestamped<T>
+where
+    T: Clone,
+{
+    fn clone(&self) -> Self {
+        Timestamped {
+            timestamp: self.timestamp,
+            value: self.value.clone(),
+        }
+    }
 }
 
 // TODO serialize implementation for Timestamped<T : Serialize>
@@ -39,9 +52,9 @@ impl<T> Timestamped<T> {
         Self { timestamp, value }
     }
 
-    pub fn now(base_time : Instant, value : T) -> Self {
+    pub fn now(base_time: Instant, value: T) -> Self {
         Self {
-            timestamp : Instant::now().duration_since(base_time),
+            timestamp: Instant::now().duration_since(base_time),
             value,
         }
     }
@@ -135,12 +148,10 @@ impl CanError {
     }
 }
 
-
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct NetworkFrame {
-    pub bus_id : u32,
-    pub can_frame : CanFrame,
+    pub bus_id: u32,
+    pub can_frame: CanFrame,
 }
 
 pub type TNetworkFrame = Timestamped<NetworkFrame>;
-
