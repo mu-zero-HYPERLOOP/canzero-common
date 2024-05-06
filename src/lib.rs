@@ -5,7 +5,7 @@ use std::{
 };
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct Timestamped<T> {
+pub struct Timestamped<T : Sized> {
     pub timestamp: Duration,
     pub value: T,
 }
